@@ -1,17 +1,36 @@
 import express from 'express';
-import dotenv from 'dotenv';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 
-import { port } from './config/env.js';
+import { PORT } from './config/env.js';
+import connectToDatabase from './database/mongodb.js';
 
-dotenv.config();
+import authRouter from './routes/auth.routes.js';
+import userRouter from './routes/user.routes.js';
+import subscriptionRouter from './routes/subscription.routes.js';
+import errorMiddleware from './middlewares/error.middleware.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(morgan('dev'));
+
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/subscriptions', subscriptionRouter);
+
+app.use(errorMiddleware);
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Subscription Tracker API!');
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
+app.listen(PORT, async () => {
+  console.log(`🚀 Subscription Tracker API is running on http://localhost:${PORT}`);
+  
+  await connectToDatabase();
 });
+
+export default app;
