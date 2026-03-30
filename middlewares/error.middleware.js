@@ -27,6 +27,13 @@ const errorMiddleware = (err, req, res, next) => {
       error.statusCode = 400;
     }
 
+    // Zod validation error
+    if (err.name === 'ZodError') {
+      const message = err.errors.map(val => val.message).join(', ');
+      error = new Error(message);
+      error.statusCode = 400;
+    }
+
     res.status(error.statusCode || 500).json({
       success: false,
       error: error.message || 'Server Error'

@@ -3,6 +3,8 @@ import authorize from '../middlewares/auth.middleware.js';
 
 const subscriptionRouter = Router();
 
+subscriptionRouter.use(authorize);
+
 // /api/v1/subscriptions
 subscriptionRouter.get('/', (req, res) => res.send({ title: 'GET all subscriptions' }));
 
@@ -10,7 +12,7 @@ subscriptionRouter.get('/', (req, res) => res.send({ title: 'GET all subscriptio
 subscriptionRouter.get('/:id', (req, res) => res.send({ title: 'GET subscription details' }));
 
 // /api/v1/subscriptions (POST)
-subscriptionRouter.post('/', authorize, (req, res) => res.send({ title: 'CREATE new subscription' }));
+subscriptionRouter.post('/', (req, res) => res.send({ title: 'CREATE new subscription' }));
 
 // /api/v1/subscriptions/:id (PUT)
 subscriptionRouter.put('/:id', (req, res) => res.send({ title: 'UPDATE subscription' }));
@@ -19,7 +21,7 @@ subscriptionRouter.put('/:id', (req, res) => res.send({ title: 'UPDATE subscript
 subscriptionRouter.delete('/:id', (req, res) => res.send({ title: 'DELETE subscription' }));
 
 // /api/v1/subscriptions/user/:id
-subscriptionRouter.get('/user/:id', authorize, (req, res) => res.send({ title: 'GET all user subscriptions' }));
+subscriptionRouter.get('/user/:id', (req, res) => res.send({ title: 'GET all user subscriptions' }));
 
 // /api/v1/subscriptions/:id/cancel
 subscriptionRouter.put('/:id/cancel', (req, res) => res.send({ title: 'CANCEL subscription' }));

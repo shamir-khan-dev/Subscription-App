@@ -4,12 +4,16 @@ import jwt from 'jsonwebtoken';
 
 import User from '../models/user.model.js';
 import { JWT_SECRET, JWT_EXPIRES_IN } from '../config/env.js';
+import { signUpSchema, signInSchema } from '../validators/auth.validator.js';
 
 export const signUp = async (req, res, next) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
+    // Validate request body
+    signUpSchema.parse(req.body);
+
     const { name, email, password } = req.body;
 
     // Check if user already exists
@@ -49,6 +53,9 @@ export const signUp = async (req, res, next) => {
 
 export const signIn = async (req, res, next) => {
   try {
+    // Validate request body
+    signInSchema.parse(req.body);
+
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
