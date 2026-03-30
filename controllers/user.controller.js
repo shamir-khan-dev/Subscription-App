@@ -15,11 +15,10 @@ export const getUsers = async (req, res, next) => {
 
 export const getCurrentUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.userId);
     res.status(200).json({
       success: true,
       message: "User fetched successfully",
-      data: user,
+      data: req.user,
     });
   } catch (error) {
     next(error);
