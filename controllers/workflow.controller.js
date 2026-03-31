@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { serve } from "@upstash/workflow/express";
 import Subscription from "../models/subscription.model.js";
 
@@ -12,16 +13,20 @@ export const sendReminders = serve(async (context) => {
 
   if (!subscription || subscription.status !== "active") return;
 
-  const renewalDate = new Date(subscription.renewalDate);
+  const renewalDate = dayjs(subscription.renewalDate);
+
+  if (renewalDate.isBefore(dayjs())) {
+    console.log(`Renewal date has already passed for ${subscription.name}. Stopping workflow.`);
+    return;
+  }
 
   for (const daysBefore of REMINDERS) {
-    const reminderDate = new Date(renewalDate);
-    reminderDate.setDate(renewalDate.getDate() - daysBefore);
+    const reminderDate = renewalDate.subtract(daysBefore, "day");
 
-    if (reminderDate > new Date()) {
+    if (reminderDate.isAfter(dayjs())) {
       await context.sleepUntil(
         `wait for ${daysBefore} days reminder`,
-        reminderDate
+        reminderDate.toDate()
       );
 
       await context.run(`send ${daysBefore} days reminder`, async () => {
