@@ -1,0 +1,20 @@
+@baseUrl = http://localhost:5500/api/v1
+
+### CREATE NEW SUBSCRIPTION (PROTECTED)
+# First, run SIGN IN from auth.http, and paste the Token here!
+POST {{baseUrl}}/subscriptions
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWNiM2RiMjNkOTNlMDJlYzMzZmM4NmYiLCJpYXQiOjE3NzQ5OTQ2NzMsImV4cCI6MTc3NTA4MTA3M30.CtR51pN_kGQYgbCqlGE11c5Sla0HiTvUfX_FcHnReUg
+
+{
+    "name": "Netflix Premium",
+    "price": 15.99,
+    "currency": "USD",
+    "frequency": "monthly",
+    "category": "entertainment",
+    "startDate": "2024-03-01T00:00:00.000Z"
+}
+
+### GET ALL MY SUBSCRIPTIONS
+GET {{baseUrl}}/subscriptions
+Authorization: Bearer <ADD_YOUR_TOKEN_HERE>
