@@ -14,6 +14,8 @@ import arcjetMiddleware from './middlewares/arcjet.middleware.js';
 
 const app = express();
 
+app.set('trust proxy', true);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
