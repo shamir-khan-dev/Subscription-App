@@ -12,6 +12,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWNiM
     "currency": "USD",
     "frequency": "monthly",
     "category": "entertainment",
+    "paymentMethod": "credit_card",
     "startDate": "2024-03-01T00:00:00.000Z"
 }
 
