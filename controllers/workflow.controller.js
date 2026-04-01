@@ -1,6 +1,7 @@
 import { serve } from "@upstash/workflow/express";
 import dayjs from "dayjs";
 import Subscription from "../models/subscription.model.js";
+import { sendReminderEmail } from "../utils/send-email.js";
 
 const REMINDERS = [7, 5, 2, 1];
 
@@ -31,7 +32,12 @@ export const sendReminders = serve(async (context) => {
 
       await context.run(`send ${daysBefore} days reminder`, async () => {
         console.log(`Sending ${daysBefore} days reminder for ${subscription.name}`);
-        // Here we will call the email service later!
+        
+        await sendReminderEmail({
+          to: subscription.user.email,
+          type: `${daysBefore} days reminder`,
+          subscription,
+        });
       });
     }
   }
