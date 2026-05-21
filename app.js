@@ -24,7 +24,7 @@ app.use((req, res, next) => {
     'https://subscription-app-roow.onrender.com',
   ];
   const origin = req.headers.origin;
-  if (origin && allowedOrigins.includes(origin)) {
+  if (origin && (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app'))) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
