@@ -16,8 +16,8 @@ const arcjetMiddleware = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.error(`Arcjet Error: ${error}`);
-    next(error);
+    console.error(`Arcjet Error (Failing Open): ${error}`);
+    next();
   }
 };
 
