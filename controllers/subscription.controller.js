@@ -31,14 +31,17 @@ export const createSubscription = async (req, res, next) => {
 
 export const getUserSubscriptions = async (req, res, next) => {
   try {
-    // Check if the user is requesting their own subscriptions
-    if (req.user.id !== req.params.id) {
+    // Support both GET / (no param, use JWT user) and GET /user/:id
+    const userId = req.params.id || req.user._id;
+
+    // Only allow users to fetch their own subscriptions
+    if (req.params.id && req.user.id !== req.params.id) {
       const error = new Error('You are not the owner of this account');
       error.statusCode = 401;
       throw error;
     }
 
-    const subscriptions = await Subscription.find({ user: req.params.id });
+    const subscriptions = await Subscription.find({ user: userId }).sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,

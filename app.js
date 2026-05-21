@@ -16,6 +16,24 @@ const app = express();
 
 app.set('trust proxy', true);
 
+// ── CORS — must be before all routes ──────────────────────────────
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:4173',
+    'https://subscription-app-roow.onrender.com',
+  ];
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

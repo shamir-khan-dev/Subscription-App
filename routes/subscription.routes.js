@@ -14,28 +14,32 @@ const subscriptionRouter = Router();
 
 subscriptionRouter.use(authorize);
 
-// /api/v1/subscriptions
-subscriptionRouter.get('/', (req, res) => res.send({ title: 'GET all subscriptions' }));
+// Static routes FIRST (before /:id to avoid shadowing)
 
-// /api/v1/subscriptions/:id
-subscriptionRouter.get('/:id', getSubscriptionDetails);
+// GET /api/v1/subscriptions — returns the logged-in user's subscriptions
+subscriptionRouter.get('/', getUserSubscriptions);
 
-// /api/v1/subscriptions (POST)
+// GET /api/v1/subscriptions/upcoming-renewals
+subscriptionRouter.get('/upcoming-renewals', getUpcomingRenewals);
+
+// POST /api/v1/subscriptions
 subscriptionRouter.post('/', createSubscription);
 
-// /api/v1/subscriptions/:id (PUT)
-subscriptionRouter.put('/:id', updateSubscription);
+// Dynamic :id routes AFTER static routes
 
-// /api/v1/subscriptions/:id (DELETE)
-subscriptionRouter.delete('/:id', deleteSubscription);
-
-// /api/v1/subscriptions/user/:id
+// GET /api/v1/subscriptions/user/:id
 subscriptionRouter.get('/user/:id', getUserSubscriptions);
 
-// /api/v1/subscriptions/:id/cancel
+// GET /api/v1/subscriptions/:id
+subscriptionRouter.get('/:id', getSubscriptionDetails);
+
+// PUT /api/v1/subscriptions/:id
+subscriptionRouter.put('/:id', updateSubscription);
+
+// PUT /api/v1/subscriptions/:id/cancel
 subscriptionRouter.put('/:id/cancel', cancelSubscription);
 
-// /api/v1/subscriptions/upcoming-renewals
-subscriptionRouter.get('/upcoming-renewals', getUpcomingRenewals);
+// DELETE /api/v1/subscriptions/:id
+subscriptionRouter.delete('/:id', deleteSubscription);
 
 export default subscriptionRouter;

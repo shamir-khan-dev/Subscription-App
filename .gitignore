@@ -59,3 +59,10 @@ typings/
 .env.*.local
 # next.js build output
 .next
+
+# Agent Skills
+.agents/
+skills-lock.json
+
+# Local scripts
+seed-user.js
