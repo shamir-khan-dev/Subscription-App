@@ -1,6 +1,8 @@
 import aj from "../config/arcjet.js";
 
 const arcjetMiddleware = async (req, res, next) => {
+  if (req.method === 'OPTIONS') return next();
+
   try {
     const decision = await aj.protect(req, { requested: 1 });
 
