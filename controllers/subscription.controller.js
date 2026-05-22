@@ -70,15 +70,40 @@ export const getSubscriptionDetails = async (req, res, next) => {
 
 export const updateSubscription = async (req, res, next) => {
   try {
-    const subscription = await Subscription.findByIdAndUpdate(req.params.id, req.body, { 
-      new: true, 
-      runValidators: true 
-    });
+    const subscription = await Subscription.findById(req.params.id);
 
     if (!subscription) {
       const error = new Error('Subscription not found');
       error.statusCode = 404;
       throw error;
+    }
+
+    const originalStatus = subscription.status;
+
+    // Clear renewalDate so the pre-save hook recalculates it if startDate or frequency changed
+    if (req.body.startDate || req.body.frequency) {
+      subscription.renewalDate = undefined;
+    }
+
+    Object.assign(subscription, req.body);
+    await subscription.save();
+
+    // Reactivated: Trigger the reminder workflow again if status is now active
+    if (originalStatus !== 'active' && subscription.status === 'active') {
+      try {
+        await workflowClient.trigger({
+          url: `${SERVER_URL}/api/v1/workflows/subscription/reminder`,
+          body: {
+            subscriptionId: subscription.id,
+          },
+          headers: {
+            'content-type': 'application/json',
+          },
+          retries: 0,
+        });
+      } catch (workflowError) {
+        console.error('Failed to trigger workflow on reactivation:', workflowError);
+      }
     }
 
     res.status(200).json({ success: true, data: subscription });

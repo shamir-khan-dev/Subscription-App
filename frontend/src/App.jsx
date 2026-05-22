@@ -270,10 +270,6 @@ function LoginPage({ onLogin }) {
 function StatsBar({ subscriptions }) {
   const active = subscriptions.filter(s => s.status === 'active');
   const monthlyTotal = active.reduce((sum, s) => sum + toMonthly(s.price, s.frequency), 0);
-  const mostExpensive = active.reduce((top, s) => {
-    const m = toMonthly(s.price, s.frequency);
-    return m > toMonthly(top?.price || 0, top?.frequency || 'monthly') ? s : top;
-  }, null);
 
   const nextRenewal = [...active]
     .filter(s => s.renewalDate)
@@ -311,7 +307,7 @@ function StatsBar({ subscriptions }) {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Subscription Card
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function SubCard({ sub, onDelete, onCancel, style }) {
+function SubCard({ sub, onDelete, onCancel, onEdit, onResume, style }) {
   const meta = CATEGORY_META[sub.category] || CATEGORY_META.other;
   const currSymbol = CURRENCY_SYMBOL[sub.currency] || sub.currency;
   const monthlyEq = toMonthly(sub.price, sub.frequency);
@@ -365,11 +361,18 @@ function SubCard({ sub, onDelete, onCancel, style }) {
       </div>
 
       <div className="sub-card-actions">
-        {sub.status === 'active' && (
+        {sub.status === 'active' ? (
           <button className="btn btn-ghost" id={`cancel-${sub._id}`} onClick={() => onCancel(sub)}>
             ⏸ Pause
           </button>
+        ) : (
+          <button className="btn btn-ghost" id={`resume-${sub._id}`} onClick={() => onResume(sub)} style={{ background: 'var(--green-dim)', color: 'var(--green)', borderColor: 'rgba(34,197,94,0.2)' }}>
+            ▶ Resume
+          </button>
         )}
+        <button className="btn btn-ghost" id={`edit-${sub._id}`} onClick={() => onEdit(sub)}>
+          ✏️ Edit
+        </button>
         <button className="btn btn-danger" id={`delete-${sub._id}`} onClick={() => onDelete(sub)}>
           🗑 Delete
         </button>
@@ -421,8 +424,22 @@ const BLANK_FORM = {
   startDate: new Date().toISOString().split('T')[0],
 };
 
-function AddSubscriptionModal({ onClose, onSuccess, token }) {
-  const [form, setForm] = useState(BLANK_FORM);
+function SubscriptionModal({ onClose, onSuccess, token, subscription }) {
+  const isEdit = !!subscription;
+  const [form, setForm] = useState(() => {
+    if (isEdit) {
+      return {
+        name: subscription.name,
+        price: subscription.price,
+        currency: subscription.currency || 'USD',
+        frequency: subscription.frequency || 'monthly',
+        category: subscription.category || 'entertainment',
+        paymentMethod: subscription.paymentMethod || '',
+        startDate: subscription.startDate ? new Date(subscription.startDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+      };
+    }
+    return BLANK_FORM;
+  });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
@@ -433,13 +450,20 @@ function AddSubscriptionModal({ onClose, onSuccess, token }) {
     setSubmitting(true);
     setError(null);
     try {
-      await axios.post(`${API}/subscriptions`, {
-        ...form,
-        price: Number(form.price),
-      }, { headers: { Authorization: `Bearer ${token}` } });
+      if (isEdit) {
+        await axios.put(`${API}/subscriptions/${subscription._id}`, {
+          ...form,
+          price: Number(form.price),
+        }, { headers: { Authorization: `Bearer ${token}` } });
+      } else {
+        await axios.post(`${API}/subscriptions`, {
+          ...form,
+          price: Number(form.price),
+        }, { headers: { Authorization: `Bearer ${token}` } });
+      }
       onSuccess();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create subscription.');
+      setError(err.response?.data?.message || `Failed to ${isEdit ? 'update' : 'save'} subscription.`);
     } finally {
       setSubmitting(false);
     }
@@ -449,7 +473,7 @@ function AddSubscriptionModal({ onClose, onSuccess, token }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-panel" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
-          <h2 className="modal-title">Add Subscription</h2>
+          <h2 className="modal-title">{isEdit ? 'Edit Subscription' : 'Add Subscription'}</h2>
           <button className="modal-close" id="modal-close-btn" onClick={onClose}>✕</button>
         </div>
 
@@ -552,7 +576,7 @@ function AddSubscriptionModal({ onClose, onSuccess, token }) {
             <button type="submit" className="btn btn-primary" id="modal-submit-btn" disabled={submitting}>
               {submitting
                 ? <><span className="animate-spin" style={{ display: 'inline-block', width: 14, height: 14, border: '2px solid rgba(0,0,0,0.3)', borderTopColor: '#000', borderRadius: '50%' }} /> Saving…</>
-                : '+ Add Subscription'}
+                : isEdit ? 'Save Changes' : '+ Add Subscription'}
             </button>
           </div>
         </form>
@@ -574,6 +598,7 @@ export default function App() {
   const [loading, setLoading]             = useState(false);
   const [error, setError]                 = useState(null);
   const [showAdd, setShowAdd]             = useState(false);
+  const [editingSub, setEditingSub]       = useState(null);
   const [confirmItem, setConfirmItem]     = useState(null); // { sub, action }
   const [actionLoading, setActionLoading] = useState(false);
 
@@ -613,10 +638,12 @@ export default function App() {
     } finally {
       setLoading(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, user]);
 
   useEffect(() => {
     if (token && user) fetchSubscriptions();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, user]);
 
   // Delete
@@ -642,12 +669,23 @@ export default function App() {
     try {
       await axios.put(`${API}/subscriptions/${confirmItem.sub._id}/cancel`, {}, authHeaders);
       setConfirmItem(null);
-      addToast(`"${confirmItem.sub.name}" has been cancelled.`, 'info');
+      addToast(`"${confirmItem.sub.name}" has been paused.`, 'info');
       fetchSubscriptions();
     } catch (err) {
-      addToast(err.response?.data?.message || 'Cancel failed.', 'error');
+      addToast(err.response?.data?.message || 'Pause failed.', 'error');
     } finally {
       setActionLoading(false);
+    }
+  };
+
+  // Resume / Reactivate
+  const handleResume = async (sub) => {
+    try {
+      await axios.put(`${API}/subscriptions/${sub._id}`, { status: 'active' }, authHeaders);
+      addToast(`"${sub.name}" has been reactivated.`, 'success');
+      fetchSubscriptions();
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Reactivation failed.', 'error');
     }
   };
 
@@ -751,6 +789,8 @@ export default function App() {
                     style={{ animationDelay: `${i * 60}ms` }}
                     onDelete={sub => setConfirmItem({ sub, action: 'delete' })}
                     onCancel={sub => setConfirmItem({ sub, action: 'cancel' })}
+                    onEdit={sub => setEditingSub(sub)}
+                    onResume={handleResume}
                   />
                 ))
               )}
@@ -761,12 +801,26 @@ export default function App() {
 
       {/* Add Modal */}
       {showAdd && (
-        <AddSubscriptionModal
+        <SubscriptionModal
           token={token}
           onClose={() => setShowAdd(false)}
           onSuccess={() => {
             setShowAdd(false);
             addToast('Subscription added successfully!', 'success');
+            fetchSubscriptions();
+          }}
+        />
+      )}
+
+      {/* Edit Modal */}
+      {editingSub && (
+        <SubscriptionModal
+          token={token}
+          subscription={editingSub}
+          onClose={() => setEditingSub(null)}
+          onSuccess={() => {
+            setEditingSub(null);
+            addToast('Subscription updated successfully!', 'success');
             fetchSubscriptions();
           }}
         />
