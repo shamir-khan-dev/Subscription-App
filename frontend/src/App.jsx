@@ -96,6 +96,24 @@ function LoginPage({ onLogin }) {
     setName(''); setEmail(''); setPassword(''); setConfirm('');
   };
 
+  const handleDemoLogin = async () => {
+    setLoading(true); setError(null);
+    try {
+      const res = await axios.post(`${API}/auth/sign-in`, {
+        email: 'demo@subtracker.app',
+        password: 'Demo@1234',
+      });
+      const { token, user } = res.data.data;
+      localStorage.setItem('subTrackerToken', token);
+      localStorage.setItem('subTrackerUser', JSON.stringify(user));
+      onLogin(token, user);
+    } catch (err) {
+      setError('Demo login failed. The server may be waking up — please wait ~30s and try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true); setError(null);
@@ -140,6 +158,43 @@ function LoginPage({ onLogin }) {
           <div className="login-logo-text">Sub<span>Tracker</span></div>
         </div>
         <p className="login-tagline">Your financial subscriptions. Tracked. Controlled. Optimized.</p>
+
+        {/* Demo Access Banner */}
+        <button
+          id="demo-login-btn"
+          type="button"
+          onClick={handleDemoLogin}
+          disabled={loading}
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem',
+            background: 'linear-gradient(135deg, rgba(99,102,241,0.18) 0%, rgba(168,85,247,0.18) 100%)',
+            border: '1.5px solid rgba(168,85,247,0.4)',
+            borderRadius: 'var(--radius-md)',
+            color: 'var(--text-primary)',
+            padding: '0.75rem 1rem',
+            fontFamily: 'var(--font-display)',
+            fontSize: '0.85rem',
+            fontWeight: 700,
+            cursor: loading ? 'not-allowed' : 'pointer',
+            marginBottom: '1.25rem',
+            transition: 'all 0.2s',
+            letterSpacing: '0.01em',
+          }}
+        >
+          {loading
+            ? <><span className="animate-spin" style={{ display:'inline-block',width:14,height:14,border:'2px solid rgba(168,85,247,0.3)',borderTopColor:'rgb(168,85,247)',borderRadius:'50%' }} /> Loading demo&hellip;</>
+            : <>&#10024; Try Demo &mdash; No sign-up needed</> }
+        </button>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
+          <div style={{ flex: 1, height: '1px', background: 'var(--border-sub)' }} />
+          <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>or sign in with your account</span>
+          <div style={{ flex: 1, height: '1px', background: 'var(--border-sub)' }} />
+        </div>
 
         {/* Tab Toggle */}
         <div style={{ display: 'flex', background: 'var(--bg-surface)', borderRadius: 'var(--radius-md)', padding: '3px', marginBottom: '1.5rem', border: '1px solid var(--border-sub)' }}>
