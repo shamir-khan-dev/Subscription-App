@@ -1,0 +1,12 @@
+SubTrack: Enterprise Subscription Management & Lifecycle Automation Architecture
+
+Engineered a production ready subscription management platform and durable workflow engine. Automates customer subscription lifecycles, trial renewal warnings, and automated status transitions using Upstash QStash Workflows, hardened with Arcjet edge rate limiting and bot detection.
+
+Key Architecture Capabilities:
+• Durable lifecycle state machines powered by Upstash Workflows with zero missed events
+• Arcjet security shielding against bot attacks, scraping, and token exhaustion under 15ms
+• Modular Express REST API with strict Zod validation schemas
+• Secure MongoDB document store with Bcrypt credential hashing and JWT sessions
+
+Tech Stack: Node.js, Express.js, MongoDB, Upstash, Arcjet, Zod, Nodemailer
+Project Code: https://github.com/shamir-khan-dev/Subscription-App

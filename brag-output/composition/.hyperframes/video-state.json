@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "historyId": "3802e31d-33c8-4e0b-8f0d-2ab78a91adb9",
+  "currentRevision": null,
+  "pendingChanges": false,
+  "files": {
+    "assets/music/bgm.mp3": {
+      "hash": "026a3dda8bfe0f63c82f75c6c20c44a24c1a8038569af292245f9e23c0b5eace",
+      "content": "C:\\Users\\shami\\.cache\\hyperframes\\history\\3802e31d-33c8-4e0b-8f0d-2ab78a91adb9\\blobs\\02\\026a3dda8bfe0f63c82f75c6c20c44a24c1a8038569af292245f9e23c0b5eace"
+    },
+    "hyperframes.json": {
+      "hash": "53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50",
+      "content": "C:\\Users\\shami\\.cache\\hyperframes\\history\\3802e31d-33c8-4e0b-8f0d-2ab78a91adb9\\blobs\\53\\53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
+    },
+    "index.html": {
+      "hash": "772617f30a35e683a573bdc60d988b1026d0a61ac2b025bd589dc3bdc7d7f3f5",
+      "content": "C:\\Users\\shami\\.cache\\hyperframes\\history\\3802e31d-33c8-4e0b-8f0d-2ab78a91adb9\\blobs\\77\\772617f30a35e683a573bdc60d988b1026d0a61ac2b025bd589dc3bdc7d7f3f5"
+    },
+    "package.json": {
+      "hash": "986a08c19ae856c932fb057f08548ec9cca43be1c8ff60de87bce56d30b3c37a",
+      "content": "C:\\Users\\shami\\.cache\\hyperframes\\history\\3802e31d-33c8-4e0b-8f0d-2ab78a91adb9\\blobs\\98\\986a08c19ae856c932fb057f08548ec9cca43be1c8ff60de87bce56d30b3c37a"
+    }
+  },
+  "revisions": {},
+  "checks": {
+    "latest": {
+      "revision": null,
+      "id": "353667c4-5841-4498-ad75-3511811f831b"
+    },
+    "revisions": {},
+    "unversioned": [
+      {
+        "id": "353667c4-5841-4498-ad75-3511811f831b",
+        "scope": "project",
+        "report": "C:\\Users\\shami\\OneDrive\\Desktop\\Coding\\Full-Stack Projects\\Subscription-App\\brag-output\\composition\\.hyperframes\\artifacts\\checks\\353667c4-5841-4498-ad75-3511811f831b.json",
+        "metadata": {
+          "ok": true,
+          "browserSkipped": false,
+          "options": {
+            "samples": 9,
+            "atTransitions": false,
+            "maxIssues": 80,
+            "collapseStatic": true,
+            "tolerance": 2,
+            "timeout": 45000,
+            "cache": true,
+            "contrast": true,
+            "craft": true,
+            "strict": false,
+            "snapshots": false,
+            "browserGpuMode": "auto",
+            "includeUnmounted": false
+          }
+        },
+        "createdAt": 1794191087821,
+        "contentHash": "e3045f58ba5d9ef7f85882dab47f1bbeb0643f5f4f56ed6fd21c58e36ee3b9c1",
+        "revision": null,
+        "inputFingerprint": "ecd7c8240b0155e1e4e27ec349f173a5a3ae9487eb2d1d01dc29b68975a18d66",
+        "inputScope": "local-project-files",
+        "attribution": "unversioned"
+      }
+    ]
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "renders": {
+    "latest": {
+      "id": "688d6e25-5bee-4a63-98a7-47aee644a282",
+      "completedAt": 1794191165734,
+      "output": "C:\\Users\\shami\\OneDrive\\Desktop\\Coding\\Full-Stack Projects\\Subscription-App\\brag-output\\brag.mp4",
+      "status": "completed",
+      "revision": null
+    },
+    "retainedRevisions": []
+  },
+  "pendingArtifactCleanup": []
+}

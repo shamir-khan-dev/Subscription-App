@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Subscription Management Launch Video</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      margin: 0;
+      padding: 0;
+      background: #090e17;
+      color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .clip {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    #scene1 {
+      opacity: 1;
+    }
+    .card-border {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(15, 23, 42, 0.8);
+    }
+    .card-border-emerald {
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      background: rgba(6, 78, 59, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="18" data-width="1920" data-height="1080" class="relative w-[1920px] h-[1080px] bg-[#070b13] overflow-hidden">
+    <audio id="bgm" src="assets/music/bgm.mp3" data-start="0" data-duration="18"></audio>
+
+    <!-- Scene 1: Bottleneck (0 - 3.5s) -->
+    <div id="scene1" class="scene clip flex flex-col items-center justify-center text-center p-20" data-start="0" data-duration="3.5" data-track-index="1" data-hold="true" data-layout-allow-overlap="true">
+      <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full card-border mb-8">
+        <span class="w-3 h-3 rounded-full bg-rose-500 animate-pulse"></span>
+        <span class="mono text-slate-300 text-lg uppercase tracking-wider">Billing Leakage Bottleneck</span>
+      </div>
+      <h1 class="text-7xl font-extrabold tracking-tight leading-tight max-w-5xl mb-8">
+        SaaS Businesses Lose Thousands To <span class="text-rose-400">Silent Renewals</span> & Bot Abuse
+      </h1>
+      <p class="text-2xl text-slate-400 max-w-3xl leading-relaxed">
+        Unreliable cron scripts fail quietly, leaving users surprised and billing endpoints vulnerable to brute force scraping.
+      </p>
+    </div>
+
+    <!-- Scene 2: Solution (3.5 - 7.5s) -->
+    <div id="scene2" class="scene clip flex flex-col items-center justify-center text-center p-20" data-start="3.5" data-duration="4.0" data-track-index="1" data-hold="true" data-layout-allow-overlap="true">
+      <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full card-border-emerald mb-8">
+        <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+        <span class="mono text-emerald-300 text-lg uppercase tracking-wider">Automated Lifecycle Platform</span>
+      </div>
+      <h1 class="text-8xl font-black tracking-tight leading-none mb-6">
+        Sub<span class="text-emerald-400">Track</span>
+      </h1>
+      <p class="text-3xl text-slate-300 font-medium max-w-4xl leading-relaxed mb-10">
+        Enterprise Subscription Workflow Automation & Arcjet Shield Architecture
+      </p>
+      <div class="flex items-center gap-6">
+        <div class="px-6 py-3 rounded-xl card-border mono text-slate-300 text-xl">
+          Upstash QStash Workflows
+        </div>
+        <div class="px-6 py-3 rounded-xl card-border mono text-slate-300 text-xl">
+          Arcjet Rate Shield
+        </div>
+        <div class="px-6 py-3 rounded-xl card-border-emerald mono text-emerald-300 text-xl font-bold">
+          Zero Leakage Engine
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 3: Engine Architecture (7.5 - 11.5s) -->
+    <div id="scene3" class="scene clip flex flex-col justify-center px-28 py-16" data-start="7.5" data-duration="4.0" data-track-index="1" data-hold="true" data-layout-allow-overlap="true">
+      <div class="flex items-center justify-between mb-10">
+        <div>
+          <span class="mono text-emerald-400 text-sm font-semibold uppercase tracking-wider">System Architecture</span>
+          <h2 class="text-5xl font-bold tracking-tight text-white mt-1">Lifecycle Automation Pipeline</h2>
+        </div>
+        <div class="mono text-right card-border px-5 py-3 rounded-xl">
+          <div class="text-xs text-slate-400 uppercase tracking-wider" data-layout-ignore="true">Security Tier</div>
+          <div class="text-2xl font-bold text-emerald-400">Arcjet Shielded</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-8">
+        <div class="p-8 rounded-2xl card-border flex flex-col justify-between">
+          <div>
+            <div class="mono text-xs text-slate-400 uppercase tracking-widest mb-2" data-layout-ignore="true">Lifecycle State Machine</div>
+            <h3 class="text-2xl font-bold text-white mb-3">Upstash Workflows</h3>
+            <p class="text-slate-400 text-lg leading-relaxed">
+              Durable event scheduling that guarantees renewal alerts and automatic status transitions with zero dropped cron ticks.
+            </p>
+          </div>
+          <div class="mt-6 pt-6 border-t border-slate-800 flex justify-between items-center mono">
+            <span class="text-slate-400 text-base" data-layout-ignore="true">Event Reliability</span>
+            <span class="text-emerald-400 font-bold text-lg">100% Guaranteed</span>
+          </div>
+        </div>
+
+        <div class="p-8 rounded-2xl card-border flex flex-col justify-between">
+          <div>
+            <div class="mono text-xs text-slate-400 uppercase tracking-widest mb-2" data-layout-ignore="true">Endpoint Protection</div>
+            <h3 class="text-2xl font-bold text-white mb-3">Arcjet Security Shield</h3>
+            <p class="text-slate-400 text-lg leading-relaxed">
+              Real time bot detection, token bucket rate limiting, and email domain reputation validation on every transaction.
+            </p>
+          </div>
+          <div class="mt-6 pt-6 border-t border-slate-800 flex justify-between items-center mono">
+            <span class="text-slate-400 text-base" data-layout-ignore="true">Shield Latency</span>
+            <span class="text-emerald-400 font-bold text-lg">Sub 15ms</span>
+          </div>
+        </div>
+
+        <div class="p-8 rounded-2xl card-border flex flex-col justify-between">
+          <div>
+            <div class="mono text-xs text-slate-400 uppercase tracking-widest mb-2" data-layout-ignore="true">Data Persistence</div>
+            <h3 class="text-2xl font-bold text-white mb-3">MongoDB Schema Store</h3>
+            <p class="text-slate-400 text-lg leading-relaxed">
+              Strict Mongoose schema contracts with JWT authentication and Bcrypt encrypted credential layers.
+            </p>
+          </div>
+          <div class="mt-6 pt-6 border-t border-slate-800 flex justify-between items-center mono">
+            <span class="text-slate-400 text-base" data-layout-ignore="true">Auth Integrity</span>
+            <span class="text-emerald-400 font-bold text-lg">JWT + Bcrypt</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 4: Metrics & Rigor (11.5 - 15.0s) -->
+    <div id="scene4" class="scene clip flex flex-col justify-center px-28 py-16" data-start="11.5" data-duration="3.5" data-track-index="1" data-hold="true" data-layout-allow-overlap="true">
+      <div class="text-center mb-12">
+        <span class="mono text-emerald-400 text-sm font-semibold uppercase tracking-wider">Engineering Rigor</span>
+        <h2 class="text-6xl font-bold tracking-tight text-white mt-2">Durable Subscription Performance</h2>
+      </div>
+
+      <div class="grid grid-cols-4 gap-6 max-w-6xl mx-auto w-full">
+        <div class="p-8 rounded-2xl card-border text-center">
+          <div class="text-5xl font-extrabold text-emerald-400 mono mb-3">100%</div>
+          <div class="text-base text-slate-300 font-medium">Cron Delivery Rate</div>
+          <div class="mono text-xs text-slate-500 mt-2" data-layout-ignore="true">Upstash Engine</div>
+        </div>
+        <div class="p-8 rounded-2xl card-border text-center">
+          <div class="text-5xl font-extrabold text-cyan-400 mono mb-3">sub 15ms</div>
+          <div class="text-base text-slate-300 font-medium">Arcjet Gate Evaluation</div>
+          <div class="mono text-xs text-slate-500 mt-2" data-layout-ignore="true">Edge Middleware</div>
+        </div>
+        <div class="p-8 rounded-2xl card-border text-center">
+          <div class="text-5xl font-extrabold text-emerald-400 mono mb-3">Zero</div>
+          <div class="text-base text-slate-300 font-medium">Renewal Surprises</div>
+          <div class="mono text-xs text-slate-500 mt-2" data-layout-ignore="true">Automated Reminders</div>
+        </div>
+        <div class="p-8 rounded-2xl card-border text-center">
+          <div class="text-5xl font-extrabold text-cyan-400 mono mb-3">REST</div>
+          <div class="text-base text-slate-300 font-medium">Modular Architecture</div>
+          <div class="mono text-xs text-slate-500 mt-2" data-layout-ignore="true">Express 4 Core</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 5: Outro & Action (15.0 - 18.0s) -->
+    <div id="scene5" class="scene clip flex flex-col items-center justify-center text-center p-20" data-start="15.0" data-duration="3.0" data-track-index="1" data-hold="true" data-layout-allow-overlap="true">
+      <h1 class="text-7xl font-black tracking-tight leading-none mb-6">
+        Sub<span class="text-emerald-400">Track</span>
+      </h1>
+      <p class="text-2xl text-slate-400 max-w-2xl leading-relaxed mb-8">
+        Production Grade Subscription Management & Workflow Automation Architecture
+      </p>
+      <div class="flex items-center gap-6 mono text-lg">
+        <span class="px-6 py-3 rounded-xl card-border text-slate-300">Node.js</span>
+        <span class="px-6 py-3 rounded-xl card-border text-slate-300">Express</span>
+        <span class="px-6 py-3 rounded-xl card-border text-slate-300">MongoDB</span>
+        <span class="px-6 py-3 rounded-xl card-border text-slate-300">Arcjet</span>
+      </div>
+      <div class="mono text-sm text-slate-500 mt-10">
+        github.com/shamir-khan-dev/Subscription-App • Built By Shamir Khan
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    // Scene 1: 0 - 3.5s
+    tl.to("#scene1", { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.0);
+    tl.to("#scene1", { opacity: 0, duration: 0.4, ease: "power2.in" }, 3.1);
+
+    // Scene 2: 3.5 - 7.5s
+    tl.to("#scene2", { opacity: 1, duration: 0.5, ease: "power2.out" }, 3.5);
+    tl.to("#scene2", { opacity: 0, duration: 0.4, ease: "power2.in" }, 7.1);
+
+    // Scene 3: 7.5 - 11.5s
+    tl.to("#scene3", { opacity: 1, duration: 0.5, ease: "power2.out" }, 7.5);
+    tl.to("#scene3", { opacity: 0, duration: 0.4, ease: "power2.in" }, 11.1);
+
+    // Scene 4: 11.5 - 15.0s
+    tl.to("#scene4", { opacity: 1, duration: 0.5, ease: "power2.out" }, 11.5);
+    tl.to("#scene4", { opacity: 0, duration: 0.4, ease: "power2.in" }, 14.6);
+
+    // Scene 5: 15.0 - 18.0s
+    tl.to("#scene5", { opacity: 1, duration: 0.5, ease: "power2.out" }, 15.0);
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines["main"] = tl;
+    tl.seek(0);
+  </script>
+</body>
+</html>
