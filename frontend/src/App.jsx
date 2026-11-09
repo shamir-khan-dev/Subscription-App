@@ -6,16 +6,16 @@ const API = 'https://subscription-app-roow.onrender.com/api/v1';
 // For local development fallback:
 // const API = 'http://localhost:5500/api/v1';
 
-// ── Category metadata ──────────────────────────────────────────────
+// Category metadata
 const CATEGORY_META = {
-  entertainment: { emoji: '🎬', color: 'var(--cat-entertainment)', bg: 'rgba(168,85,247,0.12)' },
-  technology:    { emoji: '💻', color: 'var(--cat-technology)',    bg: 'rgba(59,130,246,0.12)'  },
-  lifestyle:     { emoji: '🌿', color: 'var(--cat-lifestyle)',     bg: 'rgba(34,197,94,0.12)'   },
-  sports:        { emoji: '⚡', color: 'var(--cat-sports)',        bg: 'rgba(249,115,22,0.12)'  },
-  finance:       { emoji: '💰', color: 'var(--cat-finance)',       bg: 'rgba(245,166,35,0.12)'  },
-  news:          { emoji: '📰', color: 'var(--cat-news)',          bg: 'rgba(6,182,212,0.12)'   },
-  politics:      { emoji: '🏛️', color: 'var(--cat-politics)',      bg: 'rgba(239,68,68,0.12)'   },
-  other:         { emoji: '📦', color: 'var(--cat-other)',         bg: 'rgba(139,146,181,0.12)' },
+  entertainment: { tag: 'ENT', color: '#a855f7', bg: 'rgba(168,85,247,0.12)' },
+  technology:    { tag: 'TECH', color: '#3b82f6', bg: 'rgba(59,130,246,0.12)'  },
+  lifestyle:     { tag: 'LIFE', color: '#22c55e', bg: 'rgba(34,197,94,0.12)'   },
+  sports:        { tag: 'SPORT', color: '#f97316', bg: 'rgba(249,115,22,0.12)'  },
+  finance:       { tag: 'FIN', color: '#f5a623', bg: 'rgba(245,166,35,0.12)'  },
+  news:          { tag: 'NEWS', color: '#06b6d4', bg: 'rgba(6,182,212,0.12)'   },
+  politics:      { tag: 'GOV', color: '#ef4444', bg: 'rgba(239,68,68,0.12)'   },
+  other:         { tag: 'GEN', color: '#8b92b5', bg: 'rgba(139,146,181,0.12)' },
 };
 
 const CURRENCY_SYMBOL = { USD: '$', EUR: '€', GBP: '£' };
@@ -319,10 +319,8 @@ function LoginPage({ onLogin }) {
   );
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Stats Bar
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function StatsBar({ subscriptions }) {
+function StatsBar({ subscriptions, user }) {
   const active = subscriptions.filter(s => s.status === 'active');
   const monthlyTotal = active.reduce((sum, s) => sum + toMonthly(s.price, s.frequency), 0);
 
@@ -331,37 +329,57 @@ function StatsBar({ subscriptions }) {
     .sort((a, b) => new Date(a.renewalDate) - new Date(b.renewalDate))[0];
 
   return (
-    <div className="stats-bar">
-      <div className="stat-card gold">
-        <div className="stat-label">Monthly Spend</div>
-        <div className="stat-value gold mono">${monthlyTotal.toFixed(2)}</div>
-        <div className="stat-sub mono">${(monthlyTotal * 12).toFixed(0)}/yr projected</div>
-      </div>
-      <div className="stat-card teal">
-        <div className="stat-label">Active Subs</div>
-        <div className="stat-value teal mono">{active.length}</div>
-        <div className="stat-sub">{subscriptions.length - active.length} inactive</div>
-      </div>
-      <div className="stat-card purple">
-        <div className="stat-label">Next Renewal</div>
-        <div className="stat-value purple mono" style={{ fontSize: '1.25rem' }}>
-          {nextRenewal ? (
-            daysUntil(nextRenewal.renewalDate) <= 0
-              ? 'Today'
-              : `${daysUntil(nextRenewal.renewalDate)}d`
-          ) : '—'}
+    <div className="stats-container">
+      <div className="swiss-debit-card">
+        <div className="debit-card-inner">
+          <div className="debit-card-top">
+            <div className="emv-chip"></div>
+            <div className="card-brand-label">SWISS LEDGER</div>
+          </div>
+          <div className="debit-card-number mono">•••• •••• •••• 8421</div>
+          <div className="debit-card-bottom">
+            <div className="card-holder-section">
+              <span className="card-field-label">CARDHOLDER</span>
+              <span className="card-field-val">{user?.name || 'SHAMIR KHAN'}</span>
+            </div>
+            <div className="card-burn-rate">
+              <span className="card-field-label">MONTHLY COMMIT</span>
+              <span className="card-field-val mono">${monthlyTotal.toFixed(2)}</span>
+            </div>
+          </div>
         </div>
-        <div className="stat-sub">
-          {nextRenewal ? nextRenewal.name : 'No upcoming renewals'}
+      </div>
+
+      <div className="stats-bar">
+        <div className="stat-card gold">
+          <div className="stat-label">Monthly Spend</div>
+          <div className="stat-value gold mono">${monthlyTotal.toFixed(2)}</div>
+          <div className="stat-sub mono">${(monthlyTotal * 12).toFixed(0)}/yr projected</div>
+        </div>
+        <div className="stat-card teal">
+          <div className="stat-label">Active Subs</div>
+          <div className="stat-value teal mono">{active.length}</div>
+          <div className="stat-sub">{subscriptions.length - active.length} inactive</div>
+        </div>
+        <div className="stat-card purple">
+          <div className="stat-label">Next Renewal</div>
+          <div className="stat-value purple mono" style={{ fontSize: '1.25rem' }}>
+            {nextRenewal ? (
+              daysUntil(nextRenewal.renewalDate) <= 0
+                ? 'Today'
+                : `${daysUntil(nextRenewal.renewalDate)}d`
+            ) : 'None'}
+          </div>
+          <div className="stat-sub">
+            {nextRenewal ? nextRenewal.name : 'No upcoming renewals'}
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Subscription Card
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function SubCard({ sub, onDelete, onCancel, onEdit, onResume, style }) {
   const meta = CATEGORY_META[sub.category] || CATEGORY_META.other;
   const currSymbol = CURRENCY_SYMBOL[sub.currency] || sub.currency;
@@ -374,8 +392,8 @@ function SubCard({ sub, onDelete, onCancel, onEdit, onResume, style }) {
 
       <div className="sub-card-top">
         <div className="sub-card-icon-name">
-          <div className="sub-card-emoji" style={{ background: meta.bg }}>
-            {meta.emoji}
+          <div className="sub-card-tag" style={{ color: meta.color, background: meta.bg }}>
+            {meta.tag}
           </div>
           <div>
             <div className="sub-card-name">{sub.name}</div>
@@ -393,24 +411,24 @@ function SubCard({ sub, onDelete, onCancel, onEdit, onResume, style }) {
         {sub.frequency !== 'monthly' && (
           <div className="sub-card-monthly mono">
             ${monthlyEq.toFixed(2)}
-            <span>/mo equiv.</span>
+            <span>/mo equiv</span>
           </div>
         )}
       </div>
 
       <div className="sub-card-meta">
         <div className="sub-meta-item">
-          <span>💳</span> {sub.paymentMethod}
+          <span className="sub-ledger-method">{sub.paymentMethod}</span>
         </div>
         <div className="sub-meta-item">
           {renewal !== null ? (
             renewal <= 0
-              ? <><span>🔴</span> Renews today</>
+              ? <><span className="status-dot dot-urgent"></span> Renews today</>
               : renewal <= 7
-              ? <><span>🟡</span> {renewal}d left</>
-              : <><span>📅</span> {renewal}d left</>
+              ? <><span className="status-dot dot-soon"></span> {renewal}d left</>
+              : <><span className="status-dot dot-active"></span> {renewal}d left</>
           ) : (
-            <><span>📅</span> {new Date(sub.startDate).toLocaleDateString()}</>
+            <>{new Date(sub.startDate).toLocaleDateString()}</>
           )}
         </div>
       </div>
@@ -418,18 +436,18 @@ function SubCard({ sub, onDelete, onCancel, onEdit, onResume, style }) {
       <div className="sub-card-actions">
         {sub.status === 'active' ? (
           <button className="btn btn-ghost" id={`cancel-${sub._id}`} onClick={() => onCancel(sub)}>
-            ⏸ Pause
+            Pause
           </button>
         ) : (
           <button className="btn btn-ghost" id={`resume-${sub._id}`} onClick={() => onResume(sub)} style={{ background: 'var(--green-dim)', color: 'var(--green)', borderColor: 'rgba(34,197,94,0.2)' }}>
-            ▶ Resume
+            Resume
           </button>
         )}
         <button className="btn btn-ghost" id={`edit-${sub._id}`} onClick={() => onEdit(sub)}>
-          ✏️ Edit
+          Edit
         </button>
         <button className="btn btn-danger" id={`delete-${sub._id}`} onClick={() => onDelete(sub)}>
-          🗑 Delete
+          Delete
         </button>
       </div>
     </div>
@@ -762,8 +780,8 @@ export default function App() {
         {/* Header */}
         <header className="app-header">
           <div className="header-brand">
-            <div className="header-brand-icon">💳</div>
-            <div className="header-brand-name">Sub<span>Tracker</span></div>
+            <div className="header-brand-icon">❖</div>
+            <div className="header-brand-name">SWISS<span>LEDGER</span></div>
           </div>
 
           <div className="header-greeting">
@@ -796,7 +814,7 @@ export default function App() {
 
         {/* Stats */}
         {subscriptions.length > 0 && !loading && (
-          <StatsBar subscriptions={subscriptions} />
+          <StatsBar subscriptions={subscriptions} user={user} />
         )}
 
         {/* Error */}

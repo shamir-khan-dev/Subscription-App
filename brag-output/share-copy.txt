@@ -10,3 +10,4 @@ Key Architecture Capabilities:
 
 Tech Stack: Node.js, Express.js, MongoDB, Upstash, Arcjet, Zod, Nodemailer
 Project Code: https://github.com/shamir-khan-dev/Subscription-App
+
